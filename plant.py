@@ -141,37 +141,7 @@ class Plant:
         for el in gupt_seiff:
             gupt_seiff_df.at[el[0], el[1]] = gupt_seiff[el]
 
-
         self.gupt_seiff = gupt_seiff_df
-
-        """
-        gupt_seiff_df2 = gupt_seiff_df2.drop(cluster[0], axis=0)
-        gupt_seiff_df2 = gupt_seiff_df2.drop(cluster[0], axis=1)
-        gupt_seiff_df2 = gupt_seiff_df2.drop(cluster[1], axis=0)
-        gupt_seiff_df2 = gupt_seiff_df2.drop(cluster[1], axis=1)
-        label = str()
-        for i in range(len(cluster)):
-            label = label + ' ' + cluster[i]
-        new_row_col = pd.Series({label: 1}, name=label)
-        gupt_seiff_df2 = gupt_seiff_df2.append(new_row_col)
-        print(gupt_seiff_df2)
-
-        sorted_vals = []
-        for el in max_vals[0]:
-            sorted_vals.append(sorted(el))
-        sorted_vals = list(unique_everseen(sorted_vals))
-        clusters = []
-        for el in sorted_vals:
-            for el2 in sorted_vals:
-                for ws in el:
-                    if ws in el2:
-                        cluster = list(unique_everseen(el + el2))
-                        clusters.append(cluster)
-
-        clusters = list(unique_everseen(clusters))
-        print(clusters)
-
-        clusters_iteration.append((clusters, max_vals[1]))"""
 
 
 
