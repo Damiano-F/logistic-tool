@@ -40,6 +40,7 @@ def baroni_urbani(ws_list, pmim):
                         a = a + 1
                 sim_matrix.at[ws, ws2] = (a + math.sqrt(a * d)) / (a + b + c + math.sqrt(a * d))
 
+    # symmetrism check
     if symm_df(sim_matrix) == False:
         raise Exception('similarity matrix not symmetric')
 
@@ -86,6 +87,7 @@ def gupta_seiffodini(ws_list, pmim, visits, demands):
                     den = den + (xxt + z + y) * demands[part]
                 sim_matrix.at[ws, ws2] = num / den
 
+    # symmetrism check
     if symm_df(sim_matrix) == False:
         raise Exception('similarity matrix not symmetric')
 
