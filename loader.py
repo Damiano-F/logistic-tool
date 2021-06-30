@@ -160,7 +160,6 @@ class Loader:
             if not parts:
                 return results
             else:
-
                 filt_paths = []
                 for part in parts:
                     for path in paths:
