@@ -93,7 +93,6 @@ class Workshop:
                     prod_time = prod_time + part.demand * (phase.machining + phase.operator)
 
         self.prod_time = prod_time
-        self.utilization = self.prod_time/self.disp_time
         self.machines = math.ceil(prod_time/self.disp_time)
 
     def seq_calc(self):
@@ -109,17 +108,19 @@ class Workshop:
 
         if setup_sum == 0:
             tts = {p: self.disp_time / demands[p] for p in demands}
-            n_seq = math.ceil(self.disp_time / max(tts.values()))
+            n_seq = math.floor(self.disp_time / max(tts.values()))
             ratios = {p: max(tts.values()) / tts[p] for p in tts}
         elif setup_sum > 0:
             n_seq1 = (self.disp_time * self.machines - self.prod_time) / setup_sum
-            if n_seq1 > 1:
-                n_seq = math.ceil(n_seq1)
+            if n_seq1 >= 1:
+                n_seq = math.floor(n_seq1)
                 ratios = {p: demands[p]/n_seq for p in demands}
             else:
                 self.machines = self.machines + 1
-                n_seq = math.ceil((self.disp_time * self.machines - self.prod_time) / setup_sum)
+                n_seq = math.floor((self.disp_time * self.machines - self.prod_time) / setup_sum)
                 ratios = {p: demands[p]/n_seq for p in demands}
+
+        self.utilization = self.prod_time/(self.disp_time * self.machines)
 
         self.n_seq = n_seq
 

@@ -1,6 +1,6 @@
 import pandas as pd
 from dictops import nestdict
-from sim_matrix import baroni_urbani, gupta_seiffodini
+from sim_matrix import gupta_seiffodini
 
 class Plant:
 
