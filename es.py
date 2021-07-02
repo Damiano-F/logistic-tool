@@ -9,4 +9,3 @@ workshops = r'C:\Users\damia\OneDrive\Desktop\logistic management tool\Es1\works
 loader_ = Loader(cycles, demand, bom, workshops)
 
 plant = Plant(loader_)
-

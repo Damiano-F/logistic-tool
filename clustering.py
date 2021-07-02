@@ -1,33 +1,29 @@
 from sklearn.cluster import AgglomerativeClustering
-import numpy as np
-import pandas as pd
+from dictops import append_value
 
-X = np.array([[1, 2], [1, 4], [1, 0],
-              [4, 2], [4, 4], [4, 0]])
-clustering = AgglomerativeClustering().fit(X)
-
-sim_dict = {'a': {'a': 1, 'b': 0.5, 'c': 0},
-            'b': {'a': 0.5, 'b': 1, 'c': 0},
-            'c': {'a': 0.5, 'b': 0, 'c': 1}}
-
-sim_matrix = pd.DataFrame.from_dict(sim_dict)
-
-clust = AgglomerativeClustering(n_clusters=2, affinity='cosine', linkage='average').fit_predict(sim_matrix)
-
-def clusters(sim, link_name):
+def clusters(sim, link_type):
 
     clusters_num = len(sim.columns) - 1
 
     clusters_collection = []
-    while clusters_num >= 1:
-        clusters = AgglomerativeClustering(n_clusters=clusters_num, affinity='cosine', linkage=link_name).fit_predict(sim)
-        clusters_collection.append(clusters)
+    while clusters_num >= 2:
+        clusters = AgglomerativeClustering(n_clusters=clusters_num, affinity='cosine', linkage=link_type).fit(sim)
+        clusters_collection.append(clusters.labels_)
         clusters_num = clusters_num - 1
 
-    return clusters_collection
+    clusters_dicts = []
+    for el in clusters_collection:
+        clusters_dict = {}
+        for i in range(len(sim.columns)):
+            append_value(clusters_dict, el[i], sim.columns[i])
+        clusters_dicts.append(clusters_dict)
 
-sim_matrix = pd.read_excel(r'C:\Users\damia\OneDrive\Desktop\logistic management tool\Es sim asimmetrica\sim asimmetrica.xlsx')
-sim_matrix.index = sim_matrix.columns
-print(sim_matrix)
+    return clusters_dicts
 
-print(clusters(sim_matrix, 'average'))
+
+# test for clusters
+# sim_matrix = pd.read_excel(r'C:\Users\damia\OneDrive\Desktop\logistic management tool\Es sim asimmetrica\sim asimmetrica.xlsx')
+# sim_matrix.index = sim_matrix.columns
+# print(sim_matrix)
+
+# print(clusters(sim_matrix, 'average'))

@@ -1,6 +1,7 @@
 import pandas as pd
 from dictops import nestdict
 from sim_matrix import gupta_seiffodini
+from clustering import clusters
 
 class Plant:
 
@@ -13,7 +14,7 @@ class Plant:
 
         self.pmim = 'undefined'
         self.sim_matrix = 'undefined'
-        self.clusters = []
+        self.clusters = 'undefined'
 
         # sets automation level
         for workshop in self.workshops:
@@ -58,3 +59,6 @@ class Plant:
         self.pmim = pd.DataFrame.from_dict(pmim)
 
         self.sim_matrix = gupta_seiffodini(workshops, self.pmim, self.visits, self.demands)
+
+        self.clusters = clusters(self.sim_matrix, 'average')
+        print(self.clusters)
