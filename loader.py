@@ -33,19 +33,27 @@ class Part:
     def set_demand(self, demand):
         self.demand = demand
 
+class Vehicle:
+
+    def __init__(self, name, capacity):
+
+        self.name = name
+        self.capacity = capacity
 
 class Loader:
 
-    def __init__(self, cycles_file, demand_file, bom_file, workshops_file):
+    def __init__(self, cycles_file, demand_file, bom_file, workshops_file, vehicles_file):
 
         self.cycles_file = cycles_file
         self.demand_file = demand_file
         self.bom_file = bom_file
         self.workshops_file = workshops_file
+        self.vehicles_file = vehicles_file
 
         self.demands = 'undefined'
         self.workshops = []
         self.parts_visits = 'undefined'
+        self.vehicles = 'undefined'
 
         cycles = pd.read_excel(self.cycles_file, sheet_name=None)
         # checks if all part names are unique
@@ -296,6 +304,26 @@ class Loader:
                 if workshop.name == part.workshop:
                     workshop.set_part(part)
 
+        #loading vehicles informations
+        vehicles_data = pd.read_excel(self.vehicles_file)
+        vehicles = []
+        for i in vehicles_data.index:
+            name = vehicles_data.at[i, 'Vehicle']
+            capacity = vehicles_data.iloc[:, 1:8]
+            for col in capacity.columns:
+                if 'P1' in col: capacity.rename(columns={col: 'Part1'}, inplace=True)
+                elif 'P2' in col: capacity.rename(columns={col: 'Part2'}, inplace=True)
+                elif 'P3' in col: capacity.rename(columns={col: 'Part3'}, inplace=True)
+                elif 'P4' in col: capacity.rename(columns={col: 'Part4'}, inplace=True)
+                elif 'P5' in col: capacity.rename(columns={col: 'Part5'}, inplace=True)
+                elif 'P6' in col: capacity.rename(columns={col: 'Part6'}, inplace=True)
+                elif 'P7' in col: capacity.rename(columns={col: 'Part7'}, inplace=True)
+            vehicle = Vehicle(name, capacity)
+            vehicles.append(vehicle)
+
+        self.vehicles = vehicles
+
+
     def get_workshops(self):
         return self.workshops
 
@@ -304,3 +332,6 @@ class Loader:
 
     def get_demands(self):
         return self.demands
+
+    def get_vehicles(self):
+        return self.vehicles

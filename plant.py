@@ -11,6 +11,7 @@ class Plant:
         self.workshops = self.loader.get_workshops()
         self.visits = self.loader.get_visits()
         self.demands = self.loader.get_demands()
+        self.vehicles = self.loader.get_vehicles()
 
         self.pmim = 'undefined'
         self.sim_matrix = 'undefined'
@@ -61,4 +62,4 @@ class Plant:
         self.sim_matrix = gupta_seiffodini(workshops, self.pmim, self.visits, self.demands)
 
         self.clusters = clusters(self.sim_matrix, 'average')
-        print(self.clusters)
+

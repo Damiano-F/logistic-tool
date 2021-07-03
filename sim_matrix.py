@@ -57,6 +57,7 @@ def gupta_seiffodini(ws_list, pmim, visits, demands):
         for phase in visits[part]:
             sint_phases.append([visits[part][phase]['w'], visits[part][phase]['t']])
         sint_visits.update({part: sint_phases})
+    print(sint_visits)
 
     for ws in sim_matrix.index:
         for ws2 in sim_matrix.columns:
