@@ -50,15 +50,6 @@ def gupta_seiffodini(ws_list, pmim, visits, demands):
 
     sim_matrix = sim_init(ws_list)
 
-    # sintetic version of visits
-    sint_visits = {}
-    for part in visits:
-        sint_phases = []
-        for phase in visits[part]:
-            sint_phases.append([visits[part][phase]['w'], visits[part][phase]['t']])
-        sint_visits.update({part: sint_phases})
-    print(sint_visits)
-
     for ws in sim_matrix.index:
         for ws2 in sim_matrix.columns:
             if ws != ws2:
@@ -74,13 +65,13 @@ def gupta_seiffodini(ws_list, pmim, visits, demands):
                     if x == 1:
                         t0 = 0
                         t1 = 0
-                        for el in sint_visits[part]:
+                        for el in visits[part]:
                             if ws == el[0]:
                                 t0 = t0 + el[1]
                             if ws2 == el[0]:
                                 t1 = t1 + el[1]
                         t = min(t0, t1) / max(t0, t1)
-                        for el, el2 in zip(sint_visits[part], sint_visits[part][1:]):
+                        for el, el2 in zip(visits[part], visits[part][1:]):
                             if (el[0] and el2[0]) in [ws, ws2]:
                                 z = z + 1
                     xxt = x * t

@@ -103,12 +103,12 @@ class Loader:
         parts_visits = {}
         for sheet in sheets:
             name = sheet.columns[0]
-            visit_seq = {}
+            visit_seq = []
             for i in range(len(sheet.index)):
                 seq = sheet.iloc[i][0]
                 workshop = sheet.iloc[i][1]
                 machining = sheet.iloc[i][2]
-                visit_seq.update({seq: {'w': workshop, 't': machining}})
+                visit_seq.append([workshop, machining])
             parts_visits.update({name: visit_seq})
         self.parts_visits = parts_visits
 

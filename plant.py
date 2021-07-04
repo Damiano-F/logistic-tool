@@ -2,6 +2,7 @@ import pandas as pd
 from dictops import nestdict
 from sim_matrix import gupta_seiffodini
 from clustering import clusters
+from layout import from_to
 
 class Plant:
 
@@ -16,6 +17,7 @@ class Plant:
         self.pmim = 'undefined'
         self.sim_matrix = 'undefined'
         self.clusters = 'undefined'
+        self.from_to = 'undefined'
 
         # sets automation level
         for workshop in self.workshops:
@@ -43,14 +45,13 @@ class Plant:
 
         # generates PMIM
         workshops = set()
-        for part in self.visits:
-            for seq in self.visits[part]:
-                workshops.add(self.visits[part][seq]['w'])
+        for ws in self.workshops:
+            workshops.add(ws.name)
         pmim = nestdict()
         for part in self.visits:
             for seq in self.visits[part]:
                 for ws in workshops:
-                    if self.visits[part][seq]['w'] == ws:
+                    if seq[0] == ws:
                         pmim[part][ws] = 1
                     else:
                         if pmim[part][ws] == 1:
@@ -63,3 +64,5 @@ class Plant:
 
         self.clusters = clusters(self.sim_matrix, 'average')
 
+        self.from_to = from_to(self.vehicles, self.demands, self.visits, workshops)
+        print(self.from_to)
