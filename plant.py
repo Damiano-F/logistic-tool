@@ -2,7 +2,8 @@ import pandas as pd
 from dictops import nestdict
 from sim_matrix import gupta_seiffodini
 from clustering import clusters
-from layout import from_to
+from from_to import from_to
+from layout import layouts
 
 class Plant:
 
@@ -64,5 +65,6 @@ class Plant:
 
         self.clusters = clusters(self.sim_matrix, 'average')
 
-        self.from_to = from_to(self.vehicles, self.demands, self.visits, workshops)
-        print(self.from_to)
+        self.from_to = from_to(self.vehicles, self.demands, self.visits, workshops, self.clusters)
+
+        layouts(self.from_to)
