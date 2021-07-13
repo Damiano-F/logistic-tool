@@ -7,7 +7,7 @@ def layouts(from_to):
         print(el)
         for idx in el.columns:
             print(type(idx))
-            tot_flow = cross_sum(el, idx, idx)
+            tot_flow = cross_sum(el, idx, idx, False)
             tot_flows.update({idx: tot_flow})
             print(tot_flow)
 

@@ -1,17 +1,17 @@
 import pandas as pd
+from dfops import cross_sum, cluster_sum
 
 from_to = pd.read_excel(r'C:\Users\damia\OneDrive\Desktop\logistic management tool\Es layout\layout_sample.xlsx')
 from_to = from_to.set_axis(from_to.columns, axis='index')
+print('Original From-To:')
 print(from_to)
 
-def cross_sum(matrix, i, j):
+print('Row Index and Cross Sum')
+print(cross_sum(from_to, 'm1', 'm1', False))
 
-    cross_center = matrix.at[j, i]
-    col_sum = matrix[i].drop(j).sum()
-    row_sum = matrix.loc[j, :].drop(i).sum()
+from_to = cluster_sum(from_to, ['m1', 'm2'])
+print('Cluster Sum')
+print(from_to)
 
-    cross_sum = col_sum + row_sum + cross_center
-
-    return cross_sum
-
-print(cross_sum(from_to, 'm1', 'm2'))
+print('Row Index and Cross Sum')
+print(cross_sum(from_to, ('m1', 'm2'), ('m1', 'm2'), False))

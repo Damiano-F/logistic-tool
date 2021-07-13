@@ -11,12 +11,15 @@ def cluster_sum(matrix, cluster):
     return matrix
 
 # sums values of row (j) and column (i) indexes, avoiding to count center cross 2 times
-def cross_sum(matrix, i, j):
+def cross_sum(matrix, i, j, cross):
 
-    cross_center = matrix.at[j, i]
-    col_sum = matrix[i].drop(j).sum()
-    row_sum = matrix.loc[j, :].drop(i).sum()
+    col_sum = matrix[i].sum() - matrix.at[j, i]
+    row_sum = matrix.loc[j, :].sum() - matrix.at[j, i]
 
-    cross_sum = col_sum + row_sum + cross_center
+    if cross == True:
+        cross_center = matrix.at[j, i]
+        cross_sum = col_sum + row_sum + cross_center
+    else:
+        cross_sum = col_sum + row_sum
 
     return cross_sum
