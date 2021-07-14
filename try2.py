@@ -1,34 +1,23 @@
 import pandas as pd
-from loader import Loader
-from plant import Plant
-from tupleops import  flatten
-from dictops import max_nested, remove_as_df
+import numpy as np
 
+def cluster_sum(matrix, cluster):
 
-loader_ = Loader(r'C:\Users\damia\OneDrive\Desktop\logistic management tool\cycles_sample.xlsx',
-                 r'C:\Users\damia\OneDrive\Desktop\logistic management tool\demand_sample.xlsx',
-                 r'C:\Users\damia\OneDrive\Desktop\logistic management tool\bom_sample.xlsx',
-                 r'C:\Users\damia\OneDrive\Desktop\logistic management tool\workshops_sample.xlsx')
+    matrix[tuple(cluster)] = matrix[cluster].sum(axis=1)
+    matrix = matrix.drop(cluster, axis=1)
+    matrix = matrix.append(pd.Series(matrix.loc[cluster, :].sum(axis=0), name=tuple(cluster)))
+    matrix = matrix.drop(cluster, axis=0)
 
-plant = Plant(loader_)
+    return matrix
 
-sim = plant.gupt_seiff
-sim_dict = sim.to_dict()
+idx = ['a', 'b', 'c']
+sample_df = pd.DataFrame(np.array([[0, 1, 1], [1, 0, 1], [1, 1, 0]]), index=idx, columns=idx)
+print(sample_df)
 
-clusters = [ws for ws in sim_dict]
-print(clusters)
+cluster = ['a', 'b']
 
-def grouping(sim, clusters):
+new_df = cluster_sum(sample_df, cluster)
+print(new_df)
 
-    # determines next clustering
-    max_values = max_nested(sim)
-    cluster = max_values[0][0]
-
-    for ws in cluster:
-        sim = remove_as_df(sim, ws)
-
-    print(sim)
-
-
-
-grouping(sim_dict, clusters)
+print(new_df[('a', 'b')])
+print(new_df.loc[('a', 'b'), :])
