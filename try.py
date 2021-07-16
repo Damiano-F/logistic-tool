@@ -7,11 +7,11 @@ print('Original From-To:')
 print(from_to)
 
 print('Row Index and Cross Sum')
-print(cross_sum(from_to, 'm1', 'm1', False))
+print(cross_sum(from_to, 'm1', 'm2', False))
 
 from_to = cluster_sum(from_to, ['m1', 'm2'])
 print('Cluster Sum')
 print(from_to)
 
-#print('Row Index and Cross Sum')
-#print(cross_sum(from_to, ['m1', 'm2'], ['m1', 'm2'], False))
+print('Row Index and Cross Sum')
+print(cross_sum(from_to, ('m1', 'm2'), ('m1', 'm2'), True))

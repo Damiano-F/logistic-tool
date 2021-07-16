@@ -5,19 +5,21 @@ def cluster_sum(matrix, cluster):
 
     matrix[tuple(cluster)] = matrix[cluster].sum(axis=1)
     matrix = matrix.drop(cluster, axis=1)
-    matrix = matrix.append(pd.Series(matrix.loc[cluster, :].sum(axis=0), name=tuple(cluster)))
-    matrix = matrix.drop(cluster, axis=0)
+    matrix = matrix.T
+    matrix[tuple(cluster)] = matrix[cluster].sum(axis=1)
+    matrix = matrix.drop(cluster, axis=1)
+    matrix = matrix.T
 
     return matrix
 
 idx = ['a', 'b', 'c']
-sample_df = pd.DataFrame(np.array([[0, 1, 1], [1, 0, 1], [1, 1, 0]]), index=idx, columns=idx)
-print(sample_df)
+matrix = pd.DataFrame(np.array([[0, 1, 1], [1, 0, 1], [1, 1, 0]]), index=idx, columns=idx)
+print(matrix)
 
 cluster = ['a', 'b']
 
-new_df = cluster_sum(sample_df, cluster)
-print(new_df)
+new_matrix = cluster_sum(matrix, cluster)
+print(new_matrix)
 
-print(new_df[('a', 'b')])
-print(new_df.loc[('a', 'b'), :])
+new_matrix2 = cluster_sum(new_matrix, ['c', ('a', 'b')])
+print(new_matrix2)
