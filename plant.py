@@ -13,6 +13,7 @@ class Plant:
         self.workshops = self.loader.get_workshops()
         self.visits = self.loader.get_visits()
         self.demands = self.loader.get_demands()
+        self.bom = self.loader.get_bom()
         self.vehicles = self.loader.get_vehicles()
 
         self.pmim = 'undefined'
@@ -65,6 +66,6 @@ class Plant:
 
         self.clusters = clusters(self.sim_matrix, 'average')
 
-        self.from_to = from_to(self.vehicles, self.demands, self.visits, workshops, self.clusters)
+        self.from_to = from_to(self.vehicles, self.demands, self.visits, workshops, self.clusters, self.bom)
 
         layouts(self.from_to)

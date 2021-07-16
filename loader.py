@@ -50,6 +50,7 @@ class Loader:
         self.workshops_file = workshops_file
         self.vehicles_file = vehicles_file
 
+        self.bom = 'undefined'
         self.demands = 'undefined'
         self.workshops = []
         self.parts_visits = 'undefined'
@@ -145,6 +146,8 @@ class Loader:
             for col in bom_data.columns:
                 if row == col:
                     bom_data.at[row, col] = 0
+
+        self.bom = bom_data
 
         # CHECKS FOR RECURSIVE DEPENDENCIES
         paths = []
@@ -323,6 +326,8 @@ class Loader:
 
         self.vehicles = vehicles
 
+    def get_bom(self):
+        return self.bom
 
     def get_workshops(self):
         return self.workshops
