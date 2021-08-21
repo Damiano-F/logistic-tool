@@ -3,7 +3,7 @@ from dictops import nestdict
 from sim_matrix import gupta_seiffodini
 from clustering import clusters
 from from_to import from_to
-from layout import layouts
+from layout import layout
 
 class Plant:
 
@@ -68,4 +68,5 @@ class Plant:
 
         self.from_to = from_to(self.vehicles, self.demands, self.visits, workshops, self.clusters, self.bom)
 
-        layouts(self.from_to)
+        for ft in self.from_to:
+            layout(ft)
