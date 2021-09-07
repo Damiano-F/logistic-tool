@@ -2,6 +2,7 @@ import math
 import pandas as pd
 from dfops import cluster_sum
 
+# creates from to
 def from_to(vehicles, demands, visits, workshops, clusters, bom):
 
     pallets_day = {}
