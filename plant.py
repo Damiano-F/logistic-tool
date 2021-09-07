@@ -20,6 +20,7 @@ class Plant:
         self.sim_matrix = 'undefined'
         self.clusters = 'undefined'
         self.from_to = 'undefined'
+        self.sequences = 'undefined'
 
         # sets automation level
         for workshop in self.workshops:
@@ -68,5 +69,10 @@ class Plant:
 
         self.from_to = from_to(self.vehicles, self.demands, self.visits, workshops, self.clusters, self.bom)
 
+        # creates list of possible sequences for layout
+        sequences = []
         for ft in self.from_to:
-            layout(ft)
+            sequences.append(layout(ft))
+        self.sequences = sequences
+
+        

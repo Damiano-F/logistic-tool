@@ -35,10 +35,12 @@ class Part:
 
 class Vehicle:
 
-    def __init__(self, name, capacity):
+    def __init__(self, name, capacity, cost, availability):
 
         self.name = name
         self.capacity = capacity
+        self.cost = cost
+        self.availability = availability
 
 class Loader:
 
@@ -321,7 +323,9 @@ class Loader:
                 elif 'P5' in col: capacity.rename(columns={col: 'Part5'}, inplace=True)
                 elif 'P6' in col: capacity.rename(columns={col: 'Part6'}, inplace=True)
                 elif 'P7' in col: capacity.rename(columns={col: 'Part7'}, inplace=True)
-            vehicle = Vehicle(name, capacity)
+            cost = vehicles_data.at[i, 'Cost']
+            availability = vehicles_data.at[i, 'Availability']
+            vehicle = Vehicle(name, capacity, cost, availability)
             vehicles.append(vehicle)
 
         self.vehicles = vehicles

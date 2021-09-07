@@ -1,5 +1,6 @@
 from dfops import cross_sum
 from dictops import maximum_keys
+from operator import itemgetter
 
 def layout(from_to):
 
@@ -46,12 +47,80 @@ def layout(from_to):
                     next_entrance = ele
                 el.append(next_entrance)
 
+        # computes integral of flows
+        returned_sequences = []
         for el in sequences:
-            flows_percent = 0
-            for el2, el3 in zip(el, el[1:]):
-                flows_percent = flows_percent + (from_to.at[el2, el3] + from_to.at[el3, el2])/flows_sum
-                print(el2, el3, flows_percent)
+            flows = 0
+            flows_integral = 0
+            for i in range(len(el)):
+                j = 0
+                while i-j > 0:
+                    flows = flows + from_to.iloc[i, j] + from_to.iloc[j, i]
+                    j = j + 1
+                flows_perc = flows/flows_sum
+                flows_integral = flows_integral + flows_perc
+            ret = (el, flows_integral)
+            returned_sequences.append(ret)
 
-        return 0
+        # checks max integral value between sequences
+        integr = 0
+        for el in returned_sequences:
+            if el[1] > integr:
+                integr = el[1]
 
-    total_flow_method(from_to)
+        # removes elements with integral value less then max
+        for el in returned_sequences:
+            if el[1] < integr:
+                returned_sequences.remove(el)
+
+        return returned_sequences
+
+    def single_flow_method(from_to):
+
+        # turns from-to matrix into a list of tuples with coordinates and value
+        lst = []
+        for c in from_to.columns:
+            for r in from_to.index:
+                if r != c:
+                    lst.append((r, c, from_to.at[r, c]))
+
+        # sort list based on values
+        lst_sort = sorted(lst, key=itemgetter(2), reverse=True)
+
+        seq = [lst_sort[0][0], lst_sort[0][1]]
+
+        # adds elements to the sequence
+        while len(seq) < len(from_to.columns):
+            for el in lst_sort:
+                if el[0] in seq and el[1] not in seq:
+                    seq.append(el[1])
+                elif el[0] not in seq and el[1] in seq:
+                    seq.append(el[0])
+
+        # computes integral of flows
+        flows = 0
+        flows_integral = 0
+        for i in range(len(seq)):
+            j = 0
+            while i-j > 0:
+                flows = flows + from_to.iloc[i, j] + from_to.iloc[j, i]
+                j = j + 1
+                flows_perc = flows/flows_sum
+                flows_integral = flows_integral + flows_perc
+            returned_sequence = (seq, flows_integral)
+
+        return returned_sequence
+
+    total = total_flow_method(from_to)
+    single = single_flow_method(from_to)
+
+    # creates list of sequences with their flows integral values
+    seq_compare = []
+    seq_compare.append(single)
+    for el in total:
+        seq_compare.append(el)
+
+    # selects sequences with higher integral
+    max_seq = max(seq_compare, key=itemgetter(1))
+
+    return max_seq[0]
